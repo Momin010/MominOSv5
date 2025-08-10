@@ -1,0 +1,52 @@
+ <ClientPageRoot Component={function MominOS} searchParams={{}} params={{}}>
+      <MominOS params={Promise} searchParams={Promise}>
+        <Desktop user={{id:"1",name:"A...", ...}} onLogout={function handleLogout}>
+          <motion.div className="h-screen r..." onMouseMove={function handleWindowMouseMove} ...>
+            <div className="h-screen r..." onMouseMove={function handleWindowMouseMove} ...>
+              <motion.div>
+              <motion.div>
+              <motion.div>
+              <div>
+              <AnimatePresence>
+              <motion.div>
+              <motion.div>
+              <AnimatePresence>
+                <PresenceChild isPresent={true} initial={undefined} custom={undefined} presenceAffectsLayout={true} ...>
+                  <motion.div className="absolute b..." initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} ...>
+                    <div className="absolute b..." style={{opacity:0, ...}} ref={function}>
+                      <motion.div className="bg-black/4..." animate={{y:[...], ...}} transition={{duration:3, ...}}>
+                        <div className="bg-black/4..." style={{}} ref={function}>
+                          <p>
+>                         <p className="text-cyan-400 text-xs font-medium flex items-center justify-center gap-1">
+                            <motion.div className="w-1.5 h-1...." animate={{scale:[...]}} transition={{duration:1, ...}}>
+>                             <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full" style={{}} ref={function}>
+                            ...
+              ...
+Call Stack
+19
+
+createUnhandledError
+./node_modules/next/dist/client/components/errors/console-error.js
+handleClientError
+./node_modules/next/dist/client/components/errors/use-error-handler.js
+console.error
+./node_modules/next/dist/client/components/globals/intercept-console-error.js
+validateDOMNesting
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+completeWork
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+runWithFiberInDEV
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+completeUnitOfWork
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+performUnitOfWork
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+workLoopSync
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+renderRootSync
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+performWorkOnRoot
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+performWorkOnRootViaSchedulerTask
+./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js
+MessagePort.performWorkUntilDeadline

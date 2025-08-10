@@ -1,0 +1,87 @@
+'Maximize2' is declared but its value is never read.
+(typescript)
+Ln 9, Col 3
+'Minimize2' is declared but its value is never read.
+(typescript)
+Ln 10, Col 3
+'Settings' is declared but its value is never read.
+(typescript)
+Ln 11, Col 3
+'Folder' is declared but its value is never read.
+(typescript)
+Ln 12, Col 3
+'History' is declared but its value is never read.
+(typescript)
+Ln 13, Col 3
+'Search' is declared but its value is never read.
+(typescript)
+Ln 14, Col 3
+'theme' is declared but its value is never read.
+(typescript)
+Ln 50, Col 10
+'setTheme' is declared but its value is never read.
+(typescript)
+Ln 50, Col 17
+'setFontSize' is declared but its value is never read.
+(typescript)
+Ln 51, Col 20
+'url' is declared but its value is never read.
+(typescript)
+Ln 201, Col 15
+An object literal cannot have multiple properties with the same name.
+(typescript)
+Ln 301, Col 5
+Property 'createDirectory' does not exist on type 'StorageManager'.
+(typescript)
+Ln 306, Col 23
+An object literal cannot have multiple properties with the same name.
+(typescript)
+Ln 310, Col 5
+Property 'createFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 315, Col 23
+An object literal cannot have multiple properties with the same name.
+(typescript)
+Ln 319, Col 5
+Property 'readFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 324, Col 39
+Property 'getItemType' does not exist on type 'StorageManager'.
+(typescript)
+Ln 333, Col 40
+Property 'deleteFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 335, Col 25
+Property 'deleteDirectory' does not exist on type 'StorageManager'.
+(typescript)
+Ln 338, Col 25
+Property 'readFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 352, Col 39
+Property 'createFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 354, Col 23
+Property 'readFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 365, Col 39
+Property 'deleteFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 367, Col 23
+Property 'createFile' does not exist on type 'StorageManager'.
+(typescript)
+Ln 368, Col 23
+An object literal cannot have multiple properties with the same name.
+(typescript)
+Ln 372, Col 5
+Property 'changeDirectory' does not exist on type 'StorageManager'.
+(typescript)
+Ln 377, Col 39
+An object literal cannot have multiple properties with the same name.
+(typescript)
+Ln 383, Col 5
+Property 'listDirectory' does not exist on type 'StorageManager'.
+(typescript)
+Ln 388, Col 37
+Parameter 'item' implicitly has an 'any' type.
+(typescript)
+Ln 390, Col 26

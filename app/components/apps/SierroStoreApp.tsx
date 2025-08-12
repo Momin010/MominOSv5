@@ -8,7 +8,7 @@ import {
   Code, Gamepad2, BookOpen, Calculator, Camera, Mail,
   Calendar, Terminal, FileText, Palette, Globe, BarChart3,
   Shield, Volume2, Cloud, Activity, Brain, Sparkles,
-  Zap, Lightning, Cpu, Database, Lock, Key, Coins,
+  Zap, Cpu, Database, Lock, Key, Coins,
   Users, MessageSquare, Share2, ExternalLink, Copy,
   Check, X, AlertTriangle, Info, Upload, Download as DownloadIcon,
   Package, Rocket, Wrench, Bug, Gift, Trophy, Target,

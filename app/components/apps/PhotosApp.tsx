@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react"
@@ -63,7 +62,7 @@ import {
   Shuffle,
   Volume2,
   VolumeX,
-  FullScreen,
+  Fullscreen,
   Minimize,
   RefreshCw,
   FolderPlus,
@@ -168,7 +167,7 @@ interface ViewSettings {
 type ViewMode = 'grid' | 'list' | 'timeline' | 'map' | 'faces'
 type SortBy = 'date' | 'name' | 'size' | 'rating' | 'color' | 'location'
 type FilterBy = 'all' | 'favorites' | 'edited' | 'recent' | 'people' | 'places' | 'things'
-type PhotoTab = 'photos' | 'albums' | 'memories' | 'shared' | 'trash'
+type PhotoTab = 'photos' | 'albums' | 'memories' | 'shared' | 'trash' | 'favorites'
 
 export default function PhotosApp() {
   // Core state
@@ -252,7 +251,7 @@ export default function PhotosApp() {
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const slideshowTimerRef = useRef<NodeJS.Timeout>()
+  const slideshowTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load photos from localStorage on mount
   useEffect(() => {
@@ -271,28 +270,44 @@ export default function PhotosApp() {
   useEffect(() => {
     localStorage.setItem('mominos-photos', JSON.stringify(photos))
   }, [photos])
-
-  const albums: Album[] = [
+  
+  // Generate albums from photos
+  const generatedAlbums: Album[] = [
     {
       id: '1',
       name: 'Recently Added',
+      description: 'All your photos',
       thumbnail: photos[0]?.src || '/placeholder.svg',
       photoCount: photos.length,
-      photos: photos.map(p => p.id)
+      photos: photos.map(p => p.id),
+      createdAt: new Date(),
+      isShared: false,
+      sortOrder: 'date' as const,
+      tags: []
     },
     {
       id: '2',
       name: 'Favorites',
+      description: 'Your favorite photos',
       thumbnail: photos.find(p => p.favorite)?.src || '/placeholder.svg',
       photoCount: photos.filter(p => p.favorite).length,
-      photos: photos.filter(p => p.favorite).map(p => p.id)
+      photos: photos.filter(p => p.favorite).map(p => p.id),
+      createdAt: new Date(),
+      isShared: false,
+      sortOrder: 'date' as const,
+      tags: ['favorites']
     },
     {
       id: '3',
       name: 'Edited',
+      description: 'Photos you have edited',
       thumbnail: photos.find(p => p.edited)?.src || '/placeholder.svg',
       photoCount: photos.filter(p => p.edited).length,
-      photos: photos.filter(p => p.edited).map(p => p.id)
+      photos: photos.filter(p => p.edited).map(p => p.id),
+      createdAt: new Date(),
+      isShared: false,
+      sortOrder: 'date' as const,
+      tags: ['edited']
     }
   ]
 
@@ -701,39 +716,40 @@ export default function PhotosApp() {
       </div>
 
       {/* Search and Filters */}
-      <div className="p-4 border-b border-white/10">
-        <div className="flex items-center gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search photos..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="glass-input w-full pl-10 text-white placeholder-gray-400"
-            />
-          </div>
-          <select
-            value={filterBy}
-            onChange={(e) => setFilterBy(e.target.value)}
-            className="glass-input text-white"
-          >
-            <option value="all">All Photos</option>
-            <option value="favorites">Favorites</option>
-            <option value="edited">Edited</option>
-            <option value="recent">Recent</option>
-          </select>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="glass-input text-white"
-          >
-            <option value="date">Sort by Date</option>
-            <option value="name">Sort by Name</option>
-            <option value="size">Sort by Size</option>
-          </select>
-        </div>
-      </div>
+<div className="p-4 border-b border-white/10">
+  <div className="flex items-center gap-4">
+    <div className="relative flex-1">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+      <input
+        type="text"
+        placeholder="Search photos..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="glass-input w-full pl-10 text-white placeholder-gray-400"
+      />
+    </div>
+    <select
+      value={filterBy}
+      onChange={(e) => setFilterBy(e.target.value as FilterBy)}  
+      className="glass-input text-white"
+    >
+      <option value="all">All Photos</option>
+      <option value="favorites">Favorites</option>
+      <option value="edited">Edited</option>
+      <option value="recent">Recent</option>
+    </select>
+    <select
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value as SortBy)}  
+      className="glass-input text-white"
+    >
+      <option value="date">Sort by Date</option>
+      <option value="name">Sort by Name</option>
+      <option value="size">Sort by Size</option>
+    </select>
+  </div>
+</div>
+
 
       {/* Main Content */}
       <div className="flex-1 p-4 overflow-auto">
@@ -772,7 +788,7 @@ export default function PhotosApp() {
 
         {currentTab === 'albums' && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {albums.map(album => (
+            {generatedAlbums.map(album => (
               <motion.div
                 key={album.id}
                 className="glass-card p-4 cursor-pointer"

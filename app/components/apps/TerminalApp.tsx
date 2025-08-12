@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
@@ -20,7 +19,7 @@ interface TerminalLine {
 interface TerminalCommand {
   command: string
   description: string
-  execute: (args: string[]) => string | Promise<string>
+  execute: (args: string[]) => string | Promise<string> | void
 }
 
 export default function TerminalApp() {
@@ -59,8 +58,10 @@ export default function TerminalApp() {
     help: {
       command: "help",
       description: "Show this help message",
-      execute: () => `Available commands:
-${Object.entries(commands).map(([name, cmd]) => `${name.padEnd(15)} - ${cmd.description}`).join('\n')}`
+      execute: () => {
+        const commandsList = Object.entries(commands).map(([name, cmd]) => `${name.padEnd(15)} - ${cmd.description}`).join('\n');
+        return `Available commands:\n${commandsList}`;
+      }
     },
     clear: {
       command: "clear",
@@ -330,18 +331,23 @@ undefined
       command: "neofetch",
       description: "System information tool",
       execute: () => {
-        const memInfo = (performance as any).memory
+        const memInfo = (performance as any).memory;
+        const uptimeMinutes = Math.floor(Date.now() / 1000 / 60);
+        const screenRes = `${screen.width}x${screen.height}`;
+        const cpuCores = navigator.hardwareConcurrency || 'Unknown';
+        const memoryInfo = memInfo ? Math.round(memInfo.usedJSHeapSize / 1024 / 1024) + 'MB / ' + Math.round(memInfo.totalJSHeapSize / 1024 / 1024) + 'MB' : 'Unknown';
+        
         const info = [
           "                   -`                     user@mominos",
           "                  .o+`                    -------------",
           "                 `ooo/                     OS: MominOS v5.0.0",
           "                `+oooo:                    Host: Web Browser Desktop",
           "               `+oooooo:                   Kernel: Browser Engine",
-          "               -+oooooo+:                  Uptime: " + Math.floor(Date.now() / 1000 / 60) + " minutes",
+          "               -+oooooo+:                  Uptime: " + uptimeMinutes + " minutes",
           "             `/:-:++oooo+:                 Shell: /bin/mominsh",
-          "            `/++++/+++++++:                Resolution: " + screen.width + "x" + screen.height,
-          "           `/++++++++++++++:               CPU: " + (navigator.hardwareConcurrency || 'Unknown') + " cores",
-          "          `/+++ooooooooo++++/              Memory: " + (memInfo ? Math.round(memInfo.usedJSHeapSize / 1024 / 1024) + 'MB / ' + Math.round(memInfo.totalJSHeapSize / 1024 / 1024) + 'MB' : 'Unknown'),
+          "            `/++++/+++++++:                Resolution: " + screenRes,
+          "           `/++++++++++++++:               CPU: " + cpuCores + " cores",
+          "          `/+++ooooooooo++++/              Memory: " + memoryInfo,
           "         ./ooosssso++osssssso+`             GPU: WebGL Available",
           "        .oossssso-````/ossssss+`            Storage: LocalStorage",
           "       -osssssso.      :ssssssso.           Terminal: MominOS Terminal v1.0.0",
@@ -351,40 +357,45 @@ undefined
           "  `+sso+:-`                 `.-/+oso:",
           " `++:.                           `-/+/",
           " .`                                 `/"
-        ].join('\n')
-        return info
+        ].join('\n');
+        return info;
       }
     },
     htop: {
       command: "htop",
       description: "Interactive process viewer",
       execute: () => {
-        const mem = (performance as any).memory
+        const mem = (performance as any).memory;
+        const hours = Math.floor(Date.now() / 1000 / 3600);
+        const minutes = String(Math.floor(Date.now() / 1000 / 60) % 60).padStart(2, '0');
+        const seconds = String(Math.floor(Date.now() / 1000) % 60).padStart(2, '0');
+        const memUsage = mem ? Math.round(mem.usedJSHeapSize / 1024 / 1024) : 12;
+        const memPercent = mem ? Math.round(mem.usedJSHeapSize / 1024 / 1024 / 1024 * 100).toFixed(1) : '0.3';
+        
         return `  CPU[||||||||||||||||||||            68.2%]     Tasks: 42, 156 thr; 2 running
   Mem[|||||||||||||||||||||||||||     85.6%]     Load average: 0.68 0.44 0.32
-  Swp[                               0.0%]      Uptime: 0${Math.floor(Date.now() / 1000 / 3600)}:${String(Math.floor(Date.now() / 1000 / 60) % 60).padStart(2, '0')}:${String(Math.floor(Date.now() / 1000) % 60).padStart(2, '0')}
+  Swp[                               0.0%]      Uptime: 0${hours}:${minutes}:${seconds}
 
   PID USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%   TIME+  Command
   1   root       20   0  169m  13m   8m S  0.0  0.4  0:01.67 systemd
   123 user       20   0  234m  45m  12m R  12.3 1.2  0:15.23 mominos-desktop
   456 user       20   0  145m  32m   8m S  3.4  0.8  0:08.45 terminal-app
   789 user       20   0   89m  16m   4m S  1.2  0.4  0:02.12 browser-app
-  ${mem ? '1011' : '1011'} user       20   0   67m  ${mem ? Math.round(mem.usedJSHeapSize / 1024 / 1024) : '12'}m   3m S  0.8  ${mem ? Math.round(mem.usedJSHeapSize / 1024 / 1024 / 1024 * 100).toFixed(1) : '0.3'}  0:01.34 code-editor
+  1011 user       20   0   67m  ${memUsage}m   3m S  0.8  ${memPercent}  0:01.34 code-editor
 
-F1Help F2Setup F3Search F4Filter F5Tree F6SortBy F7Nice- F8Nice+ F9Kill F10Quit`
+F1Help F2Setup F3Search F4Filter F5Tree F6SortBy F7Nice- F8Nice+ F9Kill F10Quit`;
       }
     },
     df: {
       command: "df",
       description: "Display filesystem disk space usage",
       execute: () => {
-        const quota = navigator.storage && navigator.storage.estimate ? 'Dynamic' : 'Unknown'
         return `Filesystem      Size  Used Avail Use% Mounted on
 /dev/browser     5.0G  2.1G  2.7G  44% /
 tmpfs           512M   84M  428M  17% /tmp
 localStorage     10M  1.2M  8.8M  12% /storage
 sessionStorage   10M  456K 9.5M   5% /session
-indexedDB       50M   12M  38M  24% /database`
+indexedDB       50M   12M  38M  24% /database`;
       }
     },
     free: {
@@ -393,14 +404,14 @@ indexedDB       50M   12M  38M  24% /database`
       execute: () => {
         const mem = (performance as any).memory
         if (mem) {
-          const total = Math.round(mem.totalJSHeapSize / 1024)
-          const used = Math.round(mem.usedJSHeapSize / 1024)
-          const free = total - used
+          const total = Math.round(mem.totalJSHeapSize / 1024);
+          const used = Math.round(mem.usedJSHeapSize / 1024);
+          const free = total - used;
           return `              total        used        free      shared  buff/cache   available
 Mem:        ${total.toString().padStart(8)} KB ${used.toString().padStart(8)} KB ${free.toString().padStart(8)} KB        0 KB        0 KB ${free.toString().padStart(8)} KB
-Swap:              0           0           0`
+Swap:              0           0           0`;
         }
-        return `Memory information not available in this browser`
+        return `Memory information not available in this browser`;
       }
     },
     lscpu: {
@@ -692,8 +703,7 @@ Commands: list-units, status, start, stop, restart, enable, disable`
         if (args.length < 2) return "zip: missing arguments"
         const archive = args[0]
         const files = args.slice(1)
-        return `  adding: ${files.join('\n  adding: ')}
-zip: created ${archive} (${files.length} files)`
+        return `  adding: ${files.join('\n  adding: ')}\nzip: created ${archive} (${files.length} files)`
       }
     },
     chmod: {
@@ -715,8 +725,6 @@ zip: created ${archive} (${files.length} files)`
         const files = args.slice(1)
         return `chown: ownership changed to ${owner} for ${files.join(', ')}`
       }
-    }
-> process.exit()`
     },
     get: {
       command: "get",
@@ -800,8 +808,8 @@ zip: created ${archive} (${files.length} files)`
     if (commandExecutor) {
       try {
         const result = await commandExecutor.execute(args.slice(1));
-        output = result;
-        if (result.includes("error") || result.includes("missing") || result.includes("No such file or directory")) {
+        output = result || '';
+        if (typeof result === 'string' && (result.includes("error") || result.includes("missing") || result.includes("No such file or directory"))) {
           outputType = 'error';
         }
       } catch (error: any) {

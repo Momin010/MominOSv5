@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Mail, Send, Trash2, Star, StarOff, Reply, Forward, Archive, Search, Plus, Filter, RefreshCw, Paperclip, Bold, Italic, List, AlignLeft, AlignCenter, AlignRight, Underline, Link, Image, Smile, Save, Eye, Download, X, ChevronDown, ChevronUp, Settings, User, Clock, Tag, Folder, MoreHorizontal, Flag, AlertCircle, CheckCircle, Calendar, MapPin, Phone, Globe, Zap, PaperPlane, FileText, FileImage, FilePdf, FileSpreadsheet, Volume2, VolumeX, Maximize2, Minimize2, Users, Inbox, FileClock, AlertOctagon, CornerUpLeft, CornerUpRight
+  Mail,  Trash2, Star, StarOff, Reply, Forward, Archive, Search, Plus, Filter, RefreshCw, Paperclip, Bold, Italic, List, AlignLeft, AlignCenter, AlignRight, Underline, Link, Image, Smile, Save, Eye, Download, X, ChevronDown, ChevronUp, Settings, User, Clock, Tag, Folder, MoreHorizontal, Flag, AlertCircle, CheckCircle, Calendar, MapPin, Phone, Globe, Zap, Send, FileText, FileImage, FileSpreadsheet, Volume2, VolumeX, Maximize2, Minimize2, Users, Inbox, FileClock, AlertOctagon, CornerUpLeft, CornerUpRight
 } from "lucide-react"
 
 // Enhanced Interfaces
@@ -85,9 +85,18 @@ const MOCK_ACCOUNTS: EmailAccount[] = [
 
 const MOCK_EMAILS: Email[] = [
     // ... (Add more diverse mock emails here)
-    { id: '1', from: 'no-reply@sierra.com', fromName: 'Sierra AI', to: ['momin.aldahdouh@example.com'], subject: "🚀 Welcome to Your New Email Experience!", body: "<h1>Hello!</h1><p>This is your new supercharged email app. Enjoy the advanced features!</p>", preview: "Hello! This is your new supercharged email app.", date: "3m ago", timestamp: Date.now() - 180000, read: false, starred: true, flagged: true, important: true, folder: 'inbox', labels: ['important', 'product'], attachments: [], priority: 'high' },
-    { id: '2', from: 'team@project.com', fromName: 'Project Team', to: ['momin.aldahdouh@example.com'], subject: "Project Phoenix - Weekly Sync", body: "<p>Reminder: our weekly sync is at 3 PM today.</p>", preview: "Reminder: our weekly sync is at 3 PM today.", date: "2h ago", timestamp: Date.now() - 7200000, read: false, starred: false, flagged: false, important: true, folder: 'inbox', labels: ['work'], attachments: [{id: 'att1', name: 'report.pdf', size: 1024 * 512, type: 'application/pdf'}], priority: 'normal' },
-    { id: '3', from: 'newsletter@dev-digest.com', fromName: 'Dev Digest', to: ['momin.aldahdouh@example.com'], subject: "Your Weekly Dose of Dev News", body: "<p>Here's what's new in the world of development...</p>", preview: "Here's what's new in the world of development...", date: "1d ago", timestamp: Date.now() - 86400000, read: true, starred: false, flagged: false, important: false, folder: 'inbox', labels: ['newsletter'], attachments: [], priority: 'low' },
+    {
+      id: '1', from: 'no-reply@sierra.com', fromName: 'Sierra AI', to: ['momin.aldahdouh@example.com'], subject: "🚀 Welcome to Your New Email Experience!", body: "<h1>Hello!</h1><p>This is your new supercharged email app. Enjoy the advanced features!</p>", preview: "Hello! This is your new supercharged email app.", date: "3m ago", timestamp: Date.now() - 180000, read: false, starred: true, flagged: true, important: true, folder: 'inbox', labels: ['important', 'product'], attachments: [], priority: 'high',
+      archived: false
+    },
+    {
+      id: '2', from: 'team@project.com', fromName: 'Project Team', to: ['momin.aldahdouh@example.com'], subject: "Project Phoenix - Weekly Sync", body: "<p>Reminder: our weekly sync is at 3 PM today.</p>", preview: "Reminder: our weekly sync is at 3 PM today.", date: "2h ago", timestamp: Date.now() - 7200000, read: false, starred: false, flagged: false, important: true, folder: 'inbox', labels: ['work'], attachments: [{ id: 'att1', name: 'report.pdf', size: 1024 * 512, type: 'application/pdf' }], priority: 'normal',
+      archived: false
+    },
+    {
+      id: '3', from: 'newsletter@dev-digest.com', fromName: 'Dev Digest', to: ['momin.aldahdouh@example.com'], subject: "Your Weekly Dose of Dev News", body: "<p>Here's what's new in the world of development...</p>", preview: "Here's what's new in the world of development...", date: "1d ago", timestamp: Date.now() - 86400000, read: true, starred: false, flagged: false, important: false, folder: 'inbox', labels: ['newsletter'], attachments: [], priority: 'low',
+      archived: false
+    },
 ];
 
 export default function EmailApp() {
@@ -107,7 +116,7 @@ export default function EmailApp() {
 
   const FOLDERS: EmailFolder[] = [
     { id: 'inbox', name: 'Inbox', icon: Inbox },
-    { id: 'sent', name: 'Sent', icon: PaperPlane },
+    { id: 'sent', name: 'Sent', icon: Send },
     { id: 'drafts', name: 'Drafts', icon: FileClock },
     { id: 'archive', name: 'Archive', icon: Archive },
     { id: 'spam', name: 'Spam', icon: AlertOctagon },

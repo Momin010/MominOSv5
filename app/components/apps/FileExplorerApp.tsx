@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import {
   Folder, FolderPlus, File, FileText, Image as ImageIcon, Music, Video, 
   Archive, Code, Settings, ArrowLeft, ArrowRight, ArrowUp, Home, 
-  Search, Grid, List, MoreVertical, Copy, Cut, Clipboard, Trash2,
+  Search, Grid, List, MoreVertical, Copy, Scissors, Clipboard, Trash2,
   Download, Upload, Share, Star, StarOff, Eye, EyeOff, Filter,
   SortAsc, SortDesc, Calendar, Clock, HardDrive, Wifi, WifiOff,
   RefreshCw, Plus, X, Check, Edit, Save, RotateCcw, ZoomIn, ZoomOut,
@@ -222,7 +222,7 @@ export default function FileExplorerApp() {
   
   // Operations state
   const [operations, setOperations] = useState<FileOperation[]>([])
-  const [isRenaming, setIsRenaming] = useState<string | null>(null)
+  const [renamingItemId, setRenamingItemId] = useState<string | null>(null)
   const [draggedItem, setDraggedItem] = useState<FileSystemItem | null>(null)
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, item?: FileSystemItem } | null>(null)
   const [showProperties, setShowProperties] = useState(false)
@@ -376,7 +376,7 @@ export default function FileExplorerApp() {
     })
     
     // Start renaming
-    setTimeout(() => setIsRenaming(id), 100)
+    setTimeout(() => setRenamingItemId(id), 100)
   }, [currentFolder])
   
   const createNewFile = useCallback(() => {
@@ -414,7 +414,7 @@ export default function FileExplorerApp() {
     })
     
     // Start renaming
-    setTimeout(() => setIsRenaming(id), 100)
+    setTimeout(() => setRenamingItemId(id), 100)
   }, [currentFolder])
   
   // File icon helper
@@ -494,7 +494,7 @@ export default function FileExplorerApp() {
   // Handle rename
   const handleRename = useCallback((itemId: string, newName: string) => {
     if (!newName.trim()) {
-      setIsRenaming(null)
+      setRenamingItemId(null)
       return
     }
     
@@ -524,7 +524,7 @@ export default function FileExplorerApp() {
       return updateItemInTree(prev)
     })
     
-    setIsRenaming(null)
+    setRenamingItemId(null)
   }, [])
   
   // Advanced search function
@@ -773,7 +773,7 @@ export default function FileExplorerApp() {
         switch (e.key) {
           case 'F2':
             if (selectedItems.size === 1) {
-              setIsRenaming(Array.from(selectedItems)[0])
+              setRenamingItemId(Array.from(selectedItems)[0])
             }
             break
           case 'Delete':
@@ -1087,7 +1087,7 @@ export default function FileExplorerApp() {
                 <AnimatePresence>
                   {currentItems.map((item) => {
                     const isSelected = selectedItems.has(item.id)
-                    const isRenaming = item.id === isRenaming
+                    const isCurrentItemRenaming = item.id === renamingItemId
                     
                     return (
                       <motion.div
@@ -1127,7 +1127,7 @@ export default function FileExplorerApp() {
                               )}
                             </div>
                             
-                            {isRenaming ? (
+                            {isCurrentItemRenaming ? (
                               <input
                                 ref={renameInputRef}
                                 defaultValue={item.name}
@@ -1138,7 +1138,7 @@ export default function FileExplorerApp() {
                                   if (e.key === 'Enter') {
                                     handleRename(item.id, e.currentTarget.value)
                                   } else if (e.key === 'Escape') {
-                                    setIsRenaming(null)
+                                    setRenamingItemId(null)
                                   }
                                 }}
                               />
@@ -1156,7 +1156,7 @@ export default function FileExplorerApp() {
                           <div className="flex items-center justify-between w-full">
                             <div className="flex items-center gap-3 min-w-0 flex-1">
                               {getFileIcon(item)}
-                              {isRenaming ? (
+                              {isCurrentItemRenaming ? (
                                 <input
                                   ref={renameInputRef}
                                   defaultValue={item.name}
@@ -1167,7 +1167,7 @@ export default function FileExplorerApp() {
                                     if (e.key === 'Enter') {
                                       handleRename(item.id, e.currentTarget.value)
                                     } else if (e.key === 'Escape') {
-                                      setIsRenaming(null)
+                                      setRenamingItemId(null)
                                     }
                                   }}
                                 />
@@ -1253,7 +1253,7 @@ export default function FileExplorerApp() {
                 <button 
                   className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   onClick={() => {
-                    setIsRenaming(contextMenu.item!.id)
+                    setRenamingItemId(contextMenu.item!.id)
                     setContextMenu(null)
                   }}
                 >
@@ -1277,7 +1277,7 @@ export default function FileExplorerApp() {
                     setContextMenu(null)
                   }}
                 >
-                  <Cut className="w-4 h-4" />
+                  <Scissors className="w-4 h-4" />
                   Cut
                 </button>
                 <button 
@@ -1707,3 +1707,4 @@ export default function FileExplorerApp() {
     </div>
   )
 }
+
